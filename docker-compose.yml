@@ -1,0 +1,129 @@
+version: '3'
+services:
+  master-app:
+    image: rails:v1
+    entrypoint: bundle exec rails s -p 3000 -b '0.0.0.0'
+    environment:
+      - RAILS_ENV=production
+    ports:
+      - "3000:3000"
+    networks:
+      common1:
+        aliases:
+          - master1
+      common2:
+        aliases:
+          - master2
+      common3:
+        aliases:
+          - master3
+      common4:
+        aliases:
+          - master4
+      common5:
+        aliases:
+          - master5
+    # links:
+    #   - slave-app-2:slaveapp2
+
+  client-m:
+    image: governmentpaas/curl-ssl
+    tty: true
+    networks:
+      - common1
+
+  slave-app-1:
+    image: rails:v1
+    entrypoint: bundle exec rails s -p 3001 -b '0.0.0.0'
+    ports:
+      - "3001:3001"
+    # links:
+    #   - master-app:master
+    networks:
+      common1:
+        aliases:
+          - slave1
+  client1:
+    image: governmentpaas/curl-ssl
+    tty: true
+    networks:
+      - common1
+
+  slave-app-2:
+    image: rails:v1
+    entrypoint: bundle exec rails s -p 3002 -b '0.0.0.0'
+    ports:
+      - "3002:3002"
+    # links:
+    #   - master-app:master
+    networks:
+      common2:
+        aliases:
+          - slave2
+
+  client2:
+    image: governmentpaas/curl-ssl
+    tty: true
+    networks:
+      - common2
+
+  slave-app-3:
+    image: rails:v1
+    entrypoint: bundle exec rails s -p 3003 -b '0.0.0.0'
+    ports:
+      - "3003:3003"
+  # links:
+  #   - master-app:master
+    networks:
+      common3:
+        aliases:
+          - slave3
+
+  client3:
+    image: governmentpaas/curl-ssl
+    tty: true
+    networks:
+      - common3
+
+  slave-app-4:
+    image: rails:v1
+    entrypoint: bundle exec rails s -p 3004 -b '0.0.0.0'
+    ports:
+      - "3004:3004"
+    # links:
+    #   - master-app:master
+    networks:
+      common4:
+        aliases:
+          - slave4
+
+  client4:
+    image: governmentpaas/curl-ssl
+    tty: true
+    networks:
+      - common4
+
+  slave-app-5:
+    image: rails:v1
+    entrypoint: bundle exec rails s -p 3005 -b '0.0.0.0'
+    ports:
+      - "3005:3005"
+      # links:
+      #   - master-app:master
+    networks:
+      common5:
+        aliases:
+          - slave5
+
+  client5:
+    image: governmentpaas/curl-ssl
+    tty: true
+    networks:
+      - common5
+
+networks:
+  common1:
+  common2:
+  common3:
+  common4:
+  common5:
